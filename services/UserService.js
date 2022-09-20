@@ -8,30 +8,26 @@ const router = express.Router();
 const User = require('../model/userModel');
 const {compareSync} = require("bcrypt");
 
-const register = async (userName,email,password)=>
+const register = async (userName,password)=>
 {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password,salt);
     let user = new User({
         username : userName,
-        email : email,
         password : hashPassword
     });
-    user.save = function () {
-        return Promise.resolve(undefined);
-    }
-    return user.save();
+   return  user.save();
 }
 
-const  login = async (userEmail,password)=>{
+const  login = async (username,password)=>{
     const filter = {
-        email : userEmail
+        username : username
     };
     console.log('filter',filter);
     const user = await User.findOne(filter);
     if(user)
     {
-        console.log('Username',userEmail,'password',user.password);
+        console.log('Username',username,'password',user.password);
         const validPass = await bcrypt.compare(password,user.password);
         if(validPass)
         {

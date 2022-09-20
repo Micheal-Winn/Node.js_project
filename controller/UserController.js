@@ -6,10 +6,9 @@ const bcrypt = require('bcrypt');
 const registerUser = async (req,res,next)=>
 {
     let userName = req.body['userName'];
-    let email = req.body['email'];
     let password = req.body['password'];
     try {
-        let user = await userService.register(userName,email,password);
+        let user = await userService.register(userName,password,);
         let payload = {id : user._id};
         const token = jwt.sign(payload,config.TOKEN_SECRET);
         res.status(200).send({token})
@@ -22,11 +21,11 @@ const registerUser = async (req,res,next)=>
 
 const login = async (req,res,next)=>
 {
-    let userEmail = req.body['email'];
+    let username = req.body['username'];
     let password = req.body['password'];
 
     try {
-        let user = await userService.login(userEmail,password);
+        let user = await userService.login(username,password);
         let payload = {id : user._id};
         const token = jwt.sign(payload,config.TOKEN_SECRET);
         res.status(200).send({token})

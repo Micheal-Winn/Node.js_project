@@ -6,7 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var AuthRouter = require('./routes/signup');
+var AuthRouter = require('./routes/userInfo');
+const auth = require('./middleware/authentication')
 
 var app = express();
 
@@ -19,6 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/practice-MO')
+    .then(()=> console.log('MongoDB connected!'))
+    .catch(error => console.log('Something Wrong',error))
+
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
