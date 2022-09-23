@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors')
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -10,6 +12,10 @@ var AuthRouter = require('./routes/userInfo');
 
 
 var app = express();
+app.use(cors({
+  origin : "http://localhost:3001",
+  method : ['GET','POST','PUT','DELETE']
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,7 +36,7 @@ mongoose.connect('mongodb://localhost:27017/practice-MO')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/auth', AuthRouter);
+app.use('/auth', AuthRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
